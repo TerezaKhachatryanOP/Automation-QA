@@ -24,7 +24,6 @@ test("POST request", async ({ request }) => {
   );
 
   expect(response.status()).toBe(200);
-
   const data = await response.json();
   expect(data).toHaveProperty("products");
   expect(data.products.length).toBeGreaterThan(0);
@@ -42,7 +41,6 @@ test('POST request without "search_product" parameter', async ({ request }) => {
   const data = await response.json();
   expect(data).toHaveProperty("message");
   expect(data.message).toContain("search_product parameter is missing");
-
   expect(data.responseCode).toBe(400);
 });
 
@@ -59,9 +57,9 @@ test("POST request to verify login detais", async ({ request }) => {
       form: { password, email },
     },
   );
+
   expect(response.status()).toBe(200);
   const data = await response.json();
-
   expect(data).toHaveProperty("message");
   expect(data.message).toBe("User exists!");
 });
@@ -118,6 +116,7 @@ test("POST request to create account", async ({ request }) => {
       },
     },
   );
+
   expect(response.status()).toBe(200);
   const data = await response.json();
 
@@ -127,16 +126,18 @@ test("POST request to create account", async ({ request }) => {
   expect(data.message).toBe("User created!");
 });
 
-
 // DELETE To Delete User Account
 test("DELETE request to delete account", async ({ request }) => {
   const password = "superSecretPassword123!";
   const email = "veryGood@example.com";
 
-  const response = await request.delete("https://automationexercise.com/api/deleteAccount", {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    form: { email, password }
-  });
+  const response = await request.delete(
+    "https://automationexercise.com/api/deleteAccount",
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      form: { email, password },
+    },
+  );
 
   expect(response.status()).toBe(200);
 
@@ -145,4 +146,24 @@ test("DELETE request to delete account", async ({ request }) => {
   expect(data.responseCode).toBe(200);
   expect(data).toHaveProperty("message");
   expect(data.message).toBe("Account deleted!");
+});
+
+// Print products with price greater than 1000
+test("GET request to print products with price greater than 1000", async ({
+  request,
+}) => {
+  const response = await request.get(
+    "https://automationexercise.com/api/productsList",
+  );
+  expect(response.status()).toBe(200);
+
+  const data = await response.json();
+  expect(data).toHaveProperty("products");
+
+  const result = data.products.filter((item) => {
+    const price = Number(item.price.replace("Rs. ", ""));
+    return price > 1000;
+  });
+
+  expect(result.length).toBeGreaterThan(0);
 });
