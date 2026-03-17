@@ -7,7 +7,6 @@ test("GET request", async ({ request }) => {
   );
   const data = await response.json();
   expect(response.status()).toBe(200);
-  console.log(data)
 });
 
 // POST To Search Product
@@ -200,6 +199,8 @@ test("GET request to print products with type Women", async ({ request }) => {
   const data = await response.json();
   expect(data).toHaveProperty("products");
 
-  const result = data.products.filter((product) => product.type === "Women");
+  const result = data.products.filter(
+    (product) => product.category?.usertype?.usertype === "Women",
+  );
   expect(result.length).toBeGreaterThan(0);
 });
