@@ -166,7 +166,6 @@ test("GET request to print products with price greater than 1000", async ({
   });
 
   expect(result.length).toBeGreaterThan(0);
-  console.log(data);
 });
 
 // Print products with category: Tops
@@ -187,5 +186,19 @@ test("GET request to print products with specific category", async ({
     }
     return product.category?.name === "Tops";
   });
+  expect(result.length).toBeGreaterThan(0);
+});
+
+// Print products with user type: Women
+test("GET request to print products with type Women", async ({ request }) => {
+  const response = await request.get(
+    "https://automationexercise.com/api/productsList",
+  );
+  expect(response.status()).toBe(200);
+
+  const data = await response.json();
+  expect(data).toHaveProperty("products");
+
+  const result = data.products.filter((product) => product.type === "Women");
   expect(result.length).toBeGreaterThan(0);
 });
