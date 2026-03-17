@@ -93,4 +93,46 @@ test("POST request to verify login details", async ({ request }) => {
 
   expect(data).toHaveProperty("responseCode");
   expect(data.responseCode).toBe(404);
+
+  console.log(data);
+});
+
+// POST To Create/Register User Account
+test("POST request to create account", async ({ request }) => {
+  const response = await request.post(
+    "https://automationexercise.com/api/createAccount",
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      form: {
+        name: "Name",
+        email: `veryGood+${Date.now()}@example.com`,
+        password: "superSecretPassword123!",
+        title: "Miss",
+        birth_date: 24,
+        birth_month: "May",
+        birth_year: 2005,
+        firstname: "Tereza",
+        lastname: "Lhachatryan",
+        company: "OP",
+        address1: "IDK",
+        address2: "Again IDK",
+        country: "Armenia",
+        zipcode: "123123",
+        state: "GoodState",
+        city: "Yerevan",
+        mobile_number: "+12341234",
+      },
+    },
+  );
+  expect(response.status()).toBe(200);
+  const data = await response.json();
+
+  expect(data).toHaveProperty("responseCode");
+  expect(data.responseCode).toBe(201);
+  expect(data).toHaveProperty("message");
+  expect(data.message).toBe("User created!");
+
+  console.log(data);
 });
