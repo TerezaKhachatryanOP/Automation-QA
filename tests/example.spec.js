@@ -104,7 +104,7 @@ test("POST request to create account", async ({ request }) => {
         birth_month: "May",
         birth_year: 2005,
         firstname: "Tereza",
-        lastname: "Lhachatryan",
+        lastname: "Khachatryan",
         company: "OP",
         address1: "IDK",
         address2: "Again IDK",
@@ -177,7 +177,7 @@ test("GET request to print products with specific category", async ({
     "https://automationexercise.com/api/productsList",
   );
   expect(response.status()).toBe(200);
-  
+
   const data = await response.json();
   expect(data).toHaveProperty("products");
 
