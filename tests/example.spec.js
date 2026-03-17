@@ -136,3 +136,25 @@ test("POST request to create account", async ({ request }) => {
 
   console.log(data);
 });
+
+
+// DELETE To Delete User Account
+test("DELETE request to delete account", async ({ request }) => {
+  const password = "superSecretPassword123!";
+  const email = "veryGood@example.com";
+
+  const response = await request.delete("https://automationexercise.com/api/deleteAccount", {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    form: { email, password }
+  });
+
+  expect(response.status()).toBe(200);
+
+  const data = await response.json();
+  expect(data).toHaveProperty("responseCode");
+  expect(data.responseCode).toBe(200);
+  expect(data).toHaveProperty("message");
+  expect(data.message).toBe("Account deleted!");
+
+  console.log(data, 'user deleted successfully');
+});
