@@ -96,7 +96,7 @@ test("POST request to create account", async ({ request }) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       form: {
-        name: "Name",
+        name: "Top",
         email: `veryGood+${Date.now()}@example.com`,
         password: "superSecretPassword123!",
         title: "Miss",
@@ -165,5 +165,27 @@ test("GET request to print products with price greater than 1000", async ({
     return price > 1000;
   });
 
+  expect(result.length).toBeGreaterThan(0);
+  console.log(data);
+});
+
+// Print products with category: Tops
+test("GET request to print products with specific category", async ({
+  request,
+}) => {
+  const response = await request.get(
+    "https://automationexercise.com/api/productsList",
+  );
+  expect(response.status()).toBe(200);
+  
+  const data = await response.json();
+  expect(data).toHaveProperty("products");
+
+  const result = data.products.filter((product) => {
+    if (Array.isArray(product.category)) {
+      return product.category.some((cat) => cat.name === "Tops");
+    }
+    return product.category?.name === "Tops";
+  });
   expect(result.length).toBeGreaterThan(0);
 });
