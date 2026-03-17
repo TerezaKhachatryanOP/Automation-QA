@@ -5,8 +5,11 @@ test("GET request", async ({ request }) => {
   const response = await request.get(
     "https://automationexercise.com/api/productsList",
   );
-  const data = await response.json();
   expect(response.status()).toBe(200);
+
+  const data = await response.json();
+  expect(data).toHaveProperty('products')
+  expect(Array.isArray(data.products)).toBeTruthy();
 });
 
 // POST To Search Product
@@ -38,13 +41,15 @@ test('POST request without "search_product" parameter', async ({ request }) => {
       form: { name: "My product" },
     },
   );
+  expect(response.status()).toBe(200);
+
   const data = await response.json();
   expect(data).toHaveProperty("message");
   expect(data.message).toContain("search_product parameter is missing");
   expect(data.responseCode).toBe(400);
 });
 
-// POST To Verify Login with valid details
+// POST To Verify Login with valid details --Test 4--
 test("POST request to verify login detais", async ({ request }) => {
   const password = "superSecretPassword123!";
   const email = "veryGood@example.com";
@@ -87,7 +92,7 @@ test("POST request to verify login details", async ({ request }) => {
   expect(data.responseCode).toBe(404);
 });
 
-// POST To Create/Register User Account
+// POST To Create/Register User Account. --TEST 6--
 test("POST request to create account", async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/createAccount",
@@ -97,7 +102,7 @@ test("POST request to create account", async ({ request }) => {
       },
       form: {
         name: "Top",
-        email: `veryGood+${Date.now()}@example.com`,
+        email: `veryGood@example.com`,
         password: "superSecretPassword123!",
         title: "Miss",
         birth_date: 24,
@@ -126,7 +131,7 @@ test("POST request to create account", async ({ request }) => {
   expect(data.message).toBe("User created!");
 });
 
-// DELETE To Delete User Account
+// DELETE To Delete User Account --Test 7--
 test("DELETE request to delete account", async ({ request }) => {
   const password = "superSecretPassword123!";
   const email = "veryGood@example.com";
