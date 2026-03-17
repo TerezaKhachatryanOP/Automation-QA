@@ -7,7 +7,6 @@ test("GET request", async ({ request }) => {
   );
   const data = await response.json();
   expect(response.status()).toBe(200);
-  console.log(data);
 });
 
 // POST To Search Product
@@ -29,8 +28,6 @@ test("POST request", async ({ request }) => {
   const data = await response.json();
   expect(data).toHaveProperty("products");
   expect(data.products.length).toBeGreaterThan(0);
-
-  console.log(data);
 });
 
 //POST To Search Product without search_product parameter
@@ -47,7 +44,6 @@ test('POST request without "search_product" parameter', async ({ request }) => {
   expect(data.message).toContain("search_product parameter is missing");
 
   expect(data.responseCode).toBe(400);
-  console.log(data);
 });
 
 // POST To Verify Login with valid details
@@ -68,8 +64,6 @@ test("POST request to verify login detais", async ({ request }) => {
 
   expect(data).toHaveProperty("message");
   expect(data.message).toBe("User exists!");
-
-  console.log("Login success response:", data);
 });
 
 // POST To Verify Login with invalid details
@@ -93,8 +87,6 @@ test("POST request to verify login details", async ({ request }) => {
 
   expect(data).toHaveProperty("responseCode");
   expect(data.responseCode).toBe(404);
-
-  console.log(data);
 });
 
 // POST To Create/Register User Account
@@ -133,8 +125,6 @@ test("POST request to create account", async ({ request }) => {
   expect(data.responseCode).toBe(201);
   expect(data).toHaveProperty("message");
   expect(data.message).toBe("User created!");
-
-  console.log(data);
 });
 
 
@@ -155,6 +145,4 @@ test("DELETE request to delete account", async ({ request }) => {
   expect(data.responseCode).toBe(200);
   expect(data).toHaveProperty("message");
   expect(data.message).toBe("Account deleted!");
-
-  console.log(data, 'user deleted successfully');
 });
