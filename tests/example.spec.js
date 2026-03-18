@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { userRegistrationData } from "../Fixtures/userData.ts";
+import { userRegistrationData, userDetails } from "../Fixtures/userData.ts";
 
 const BASE_URL = process.env.BASE_URL || "https://automationexercise.com/api";
 
@@ -58,6 +58,20 @@ test("POST request to verify login details", async ({ request }) => {
 });
 
 test.describe.serial("User account management", async () => {
+  // DELETE To Delete User Account
+  test("DELETE request to delete account", async ({ request }) => {
+    const response = await request.delete(`${BASE_URL}/deleteAccount`, {
+      form: { ...userDetails },
+    });
+
+    expect(response.status()).toBe(200);
+
+    const data = await response.json();
+    expect(data).toHaveProperty("responseCode");
+    expect(data.responseCode).toBe(200);
+    expect(data).toHaveProperty("message");
+    expect(data.message).toBe("Account deleted!");
+  });
   // POST To Create/Register User Account.
   test("POST request to create account", async ({ request }) => {
     const response = await request.post(`${BASE_URL}/createAccount`, {
@@ -76,33 +90,14 @@ test.describe.serial("User account management", async () => {
   });
   // POST To Verify Login with valid details
   test("POST request to verify login detais", async ({ request }) => {
-    const password = process.env.PASSWORD;
-    const email = process.env.EMAIL;
     const response = await request.post(`${BASE_URL}/verifyLogin`, {
-      form: { password, email },
+      form: { ...userDetails },
     });
 
     expect(response.status()).toBe(200);
     const data = await response.json();
     expect(data).toHaveProperty("message");
     expect(data.message).toBe("User exists!");
-  });
-  // DELETE To Delete User Account
-  test("DELETE request to delete account", async ({ request }) => {
-    const password = process.env.PASSWORD;
-    const email = process.env.EMAIL;
-
-    const response = await request.delete(`${BASE_URL}/deleteAccount`, {
-      form: { email, password },
-    });
-
-    expect(response.status()).toBe(200);
-
-    const data = await response.json();
-    expect(data).toHaveProperty("responseCode");
-    expect(data.responseCode).toBe(200);
-    expect(data).toHaveProperty("message");
-    expect(data.message).toBe("Account deleted!");
   });
 });
 

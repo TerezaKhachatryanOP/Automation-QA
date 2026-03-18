@@ -1,5 +1,5 @@
-const email = process.env.EMAIL || "superSecretPasword123!";
-const password = process.env.PASSWORD || "veryGood@example.com";
+const email = process.env.EMAIL || "veryGood@example.com";
+const password = process.env.PASSWORD || "superSecretPassword123!";
 
 export interface UserRegistrationData {
   name: string;
@@ -40,3 +40,8 @@ export const userRegistrationData: UserRegistrationData = {
   city: "Yerevan",
   mobile_number: "+12341234",
 };
+
+export const userDetails = {
+    email,
+    password
+}
