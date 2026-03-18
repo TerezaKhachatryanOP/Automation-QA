@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { describe } from "node:test";
 import { userRegistrationData } from "../Fixtures/userData.ts";
-
-import dotenv from "dotenv";
-dotenv.config();
 
 const BASE_URL = process.env.BASE_URL || "https://automationexercise.com/api";
 
