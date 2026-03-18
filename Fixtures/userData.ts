@@ -41,7 +41,12 @@ export const userRegistrationData: UserRegistrationData = {
   mobile_number: "+12341234",
 };
 
-export const userDetails = {
+export interface UserDetails {
+  email: string;
+  password: string;
+}
+
+export const userDetails: UserDetails = {
     email,
     password
 }
