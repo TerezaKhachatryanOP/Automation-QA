@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { describe } from "node:test";
+import { userRegistrationData } from "../Fixtures/userData.ts";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -7,9 +9,7 @@ const BASE_URL = process.env.BASE_URL || "https://automationexercise.com/api";
 
 // Get All Products List
 test("GET request", async ({ request }) => {
-  const response = await request.get(
-    `${BASE_URL}/productsList`,
-  );
+  const response = await request.get(`${BASE_URL}/productsList`);
   expect(response.status()).toBe(200);
 
   const data = await response.json();
@@ -19,14 +19,11 @@ test("GET request", async ({ request }) => {
 
 // POST To Search Product
 test("POST request", async ({ request }) => {
-  const response = await request.post(
-  `${BASE_URL}/searchProduct`,
-    {
-      form: {
-        search_product: "top",
-      },
+  const response = await request.post(`${BASE_URL}/searchProduct`, {
+    form: {
+      search_product: "top",
     },
-  );
+  });
 
   expect(response.status()).toBe(200);
   const data = await response.json();
@@ -36,12 +33,9 @@ test("POST request", async ({ request }) => {
 
 //POST To Search Product without search_product parameter
 test('POST request without "search_product" parameter', async ({ request }) => {
-  const response = await request.post(
-    `${BASE_URL}/searchProduct`,
-    {
-      form: { name: "My product" },
-    },
-  );
+  const response = await request.post(`${BASE_URL}/searchProduct`, {
+    form: { name: "My product" },
+  });
   expect(response.status()).toBe(200);
 
   const data = await response.json();
@@ -54,12 +48,9 @@ test('POST request without "search_product" parameter', async ({ request }) => {
 test("POST request to verify login details", async ({ request }) => {
   const password = process.env.INVALID_PASSWORD;
   const email = process.env.EMAIL;
-  const response = await request.post(
-    `${BASE_URL}/verifyLogin`,
-    {
-      form: { password, email },
-    },
-  );
+  const response = await request.post(`${BASE_URL}/verifyLogin`, {
+    form: { password, email },
+  });
   expect(response.status()).toBe(200);
   const data = await response.json();
 
@@ -71,55 +62,13 @@ test("POST request to verify login details", async ({ request }) => {
 });
 
 test.describe.serial("User account management", async () => {
-  // DELETE To Delete User Account
-  test("DELETE request to delete account", async ({ request }) => {
-    const password = process.env.PASSWORD;
-    const email = process.env.EMAIL;
-
-    const response = await request.delete(
-      `${BASE_URL}/deleteAccount`,
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        form: { email, password },
-      },
-    );
-
-    expect(response.status()).toBe(200);
-
-    const data = await response.json();
-    expect(data).toHaveProperty("responseCode");
-    expect(data.responseCode).toBe(200);
-    expect(data).toHaveProperty("message");
-    expect(data.message).toBe("Account deleted!");
-  });
   // POST To Create/Register User Account.
   test("POST request to create account", async ({ request }) => {
-    const email = process.env.EMAIL;
-    const password = process.env.PASSWORD;
-    const response = await request.post(
-      `${BASE_URL}/createAccount`,
-      {
-        form: {
-          name: "Top",
-          email,
-          password,
-          title: "Miss",
-          birth_date: 24,
-          birth_month: "May",
-          birth_year: 2005,
-          firstname: "Tereza",
-          lastname: "Khachatryan",
-          company: "OP",
-          address1: "IDK",
-          address2: "Again IDK",
-          country: "Armenia",
-          zipcode: "123123",
-          state: "GoodState",
-          city: "Yerevan",
-          mobile_number: "+12341234",
-        },
+    const response = await request.post(`${BASE_URL}/createAccount`, {
+      form: {
+        ...userRegistrationData,
       },
-    );
+    });
 
     expect(response.status()).toBe(200);
     const data = await response.json();
@@ -133,17 +82,31 @@ test.describe.serial("User account management", async () => {
   test("POST request to verify login detais", async ({ request }) => {
     const password = process.env.PASSWORD;
     const email = process.env.EMAIL;
-    const response = await request.post(
-      `${BASE_URL}/verifyLogin`,
-      {
-        form: { password, email },
-      },
-    );
+    const response = await request.post(`${BASE_URL}/verifyLogin`, {
+      form: { password, email },
+    });
 
     expect(response.status()).toBe(200);
     const data = await response.json();
     expect(data).toHaveProperty("message");
     expect(data.message).toBe("User exists!");
+  });
+  // DELETE To Delete User Account
+  test("DELETE request to delete account", async ({ request }) => {
+    const password = process.env.PASSWORD;
+    const email = process.env.EMAIL;
+
+    const response = await request.delete(`${BASE_URL}/deleteAccount`, {
+      form: { email, password },
+    });
+
+    expect(response.status()).toBe(200);
+
+    const data = await response.json();
+    expect(data).toHaveProperty("responseCode");
+    expect(data.responseCode).toBe(200);
+    expect(data).toHaveProperty("message");
+    expect(data.message).toBe("Account deleted!");
   });
 });
 
@@ -151,9 +114,7 @@ test.describe.serial("User account management", async () => {
 test("GET request to print products with price greater than 1000", async ({
   request,
 }) => {
-  const response = await request.get(
-    `${BASE_URL}/productsList`,
-  );
+  const response = await request.get(`${BASE_URL}/productsList`);
   expect(response.status()).toBe(200);
 
   const data = await response.json();
@@ -171,9 +132,7 @@ test("GET request to print products with price greater than 1000", async ({
 test("GET request to print products with specific category", async ({
   request,
 }) => {
-  const response = await request.get(
-    `${BASE_URL}/productsList`,
-  );
+  const response = await request.get(`${BASE_URL}/productsList`);
   expect(response.status()).toBe(200);
 
   const data = await response.json();
@@ -190,9 +149,7 @@ test("GET request to print products with specific category", async ({
 
 // Print products with user type: Women
 test("GET request to print products with type Women", async ({ request }) => {
-  const response = await request.get(
-    `${BASE_URL}/productsList`,
-  );
+  const response = await request.get(`${BASE_URL}/productsList`);
   expect(response.status()).toBe(200);
 
   const data = await response.json();
