@@ -135,9 +135,6 @@ test("GET request to print products with specific category", async ({
   expect(data).toHaveProperty("products");
 
   const result = data.products.filter((product) => {
-    if (Array.isArray(product.category)) {
-      return product.category.some((cat) => cat.category === "Tops");
-    }
     return product.category?.category === "Tops";
   });
   expect(result.length).toBeGreaterThan(0);
