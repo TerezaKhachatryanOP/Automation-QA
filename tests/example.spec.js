@@ -47,8 +47,8 @@ test('POST request without "search_product" parameter', async ({ request }) => {
 
 // POST To Verify Login with valid details --Test 4--
 test("POST request to verify login detais", async ({ request }) => {
-  const password = "superSecretPassword123!";
-  const email = "veryGood@example.com";
+  const password = process.env.PASSWORD;
+  const email = process.env.EMAIL;
   const response = await request.post(
     "https://automationexercise.com/api/verifyLogin",
     {
@@ -64,8 +64,8 @@ test("POST request to verify login detais", async ({ request }) => {
 
 // POST To Verify Login with invalid details
 test("POST request to verify login details", async ({ request }) => {
-  const password = "invalid-password";
-  const email = "invalid-mail";
+  const password = process.env.INVALID_PASSWORD;
+  const email = process.env.EMAIL;
   const response = await request.post(
     "https://automationexercise.com/api/verifyLogin",
     {
@@ -120,8 +120,8 @@ test("POST request to create account", async ({ request }) => {
 
 // DELETE To Delete User Account --Test 7--
 test("DELETE request to delete account", async ({ request }) => {
-  const password = "superSecretPassword123!";
-  const email = "veryGood@example.com";
+  const password = process.env.PASSWORD;
+  const email = process.env.EMAIL;
 
   const response = await request.delete(
     "https://automationexercise.com/api/deleteAccount",
