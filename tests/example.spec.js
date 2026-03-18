@@ -17,9 +17,6 @@ test("POST request", async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/searchProduct",
     {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       form: {
         search_product: "top",
       },
@@ -37,7 +34,6 @@ test('POST request without "search_product" parameter', async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/searchProduct",
     {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       form: { name: "My product" },
     },
   );
@@ -56,9 +52,6 @@ test("POST request to verify login detais", async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/verifyLogin",
     {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       form: { password, email },
     },
   );
@@ -76,9 +69,6 @@ test("POST request to verify login details", async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/verifyLogin",
     {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       form: { password, email },
     },
   );
@@ -97,9 +87,6 @@ test("POST request to create account", async ({ request }) => {
   const response = await request.post(
     "https://automationexercise.com/api/createAccount",
     {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
       form: {
         name: "Top",
         email: `veryGood@example.com`,
