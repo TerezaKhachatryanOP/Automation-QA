@@ -1,10 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { describe } from "node:test";
+import dotenv from "dotenv";
+dotenv.config();
+
+const BASE_URL = process.env.BASE_URL || "https://automationexercise.com/api";
 
 // Get All Products List
 test("GET request", async ({ request }) => {
   const response = await request.get(
-    "https://automationexercise.com/api/productsList",
+    `${BASE_URL}/productsList`,
   );
   expect(response.status()).toBe(200);
 
@@ -16,7 +20,7 @@ test("GET request", async ({ request }) => {
 // POST To Search Product
 test("POST request", async ({ request }) => {
   const response = await request.post(
-    "https://automationexercise.com/api/searchProduct",
+  `${BASE_URL}/searchProduct`,
     {
       form: {
         search_product: "top",
@@ -33,7 +37,7 @@ test("POST request", async ({ request }) => {
 //POST To Search Product without search_product parameter
 test('POST request without "search_product" parameter', async ({ request }) => {
   const response = await request.post(
-    "https://automationexercise.com/api/searchProduct",
+    `${BASE_URL}/searchProduct`,
     {
       form: { name: "My product" },
     },
@@ -51,7 +55,7 @@ test("POST request to verify login details", async ({ request }) => {
   const password = process.env.INVALID_PASSWORD;
   const email = process.env.EMAIL;
   const response = await request.post(
-    "https://automationexercise.com/api/verifyLogin",
+    `${BASE_URL}/verifyLogin`,
     {
       form: { password, email },
     },
@@ -73,7 +77,7 @@ test.describe.serial("User account management", async () => {
     const email = process.env.EMAIL;
 
     const response = await request.delete(
-      "https://automationexercise.com/api/deleteAccount",
+      `${BASE_URL}/deleteAccount`,
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         form: { email, password },
@@ -93,7 +97,7 @@ test.describe.serial("User account management", async () => {
     const email = process.env.EMAIL;
     const password = process.env.PASSWORD;
     const response = await request.post(
-      "https://automationexercise.com/api/createAccount",
+      `${BASE_URL}/createAccount`,
       {
         form: {
           name: "Top",
@@ -130,7 +134,7 @@ test.describe.serial("User account management", async () => {
     const password = process.env.PASSWORD;
     const email = process.env.EMAIL;
     const response = await request.post(
-      "https://automationexercise.com/api/verifyLogin",
+      `${BASE_URL}/verifyLogin`,
       {
         form: { password, email },
       },
@@ -148,7 +152,7 @@ test("GET request to print products with price greater than 1000", async ({
   request,
 }) => {
   const response = await request.get(
-    "https://automationexercise.com/api/productsList",
+    `${BASE_URL}/productsList`,
   );
   expect(response.status()).toBe(200);
 
@@ -168,7 +172,7 @@ test("GET request to print products with specific category", async ({
   request,
 }) => {
   const response = await request.get(
-    "https://automationexercise.com/api/productsList",
+    `${BASE_URL}/productsList`,
   );
   expect(response.status()).toBe(200);
 
@@ -187,7 +191,7 @@ test("GET request to print products with specific category", async ({
 // Print products with user type: Women
 test("GET request to print products with type Women", async ({ request }) => {
   const response = await request.get(
-    "https://automationexercise.com/api/productsList",
+    `${BASE_URL}/productsList`,
   );
   expect(response.status()).toBe(200);
 
