@@ -9,7 +9,7 @@ test("GET request", async ({ request }) => {
   expect(response.status()).toBe(200);
 
   const data = await response.json();
-  expect(data).toHaveProperty('products')
+  expect(data).toHaveProperty("products");
   expect(Array.isArray(data.products)).toBeTruthy();
 });
 
@@ -66,16 +66,39 @@ test("POST request to verify login details", async ({ request }) => {
   expect(data.responseCode).toBe(404);
 });
 
-describe('User account management', async () => {
-  // POST To Create/Register User Account. 
+test.describe.serial("User account management", async () => {
+  // DELETE To Delete User Account
+  test("DELETE request to delete account", async ({ request }) => {
+    const password = process.env.PASSWORD;
+    const email = process.env.EMAIL;
+
+    const response = await request.delete(
+      "https://automationexercise.com/api/deleteAccount",
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        form: { email, password },
+      },
+    );
+
+    expect(response.status()).toBe(200);
+
+    const data = await response.json();
+    expect(data).toHaveProperty("responseCode");
+    expect(data.responseCode).toBe(200);
+    expect(data).toHaveProperty("message");
+    expect(data.message).toBe("Account deleted!");
+  });
+  // POST To Create/Register User Account.
   test("POST request to create account", async ({ request }) => {
+    const email = process.env.EMAIL;
+    const password = process.env.PASSWORD;
     const response = await request.post(
       "https://automationexercise.com/api/createAccount",
       {
         form: {
           name: "Top",
-          email: `veryGood@example.com`,
-          password: "superSecretPassword123!",
+          email,
+          password,
           title: "Miss",
           birth_date: 24,
           birth_month: "May",
@@ -102,7 +125,7 @@ describe('User account management', async () => {
     expect(data).toHaveProperty("message");
     expect(data.message).toBe("User created!");
   });
-  // POST To Verify Login with valid details 
+  // POST To Verify Login with valid details
   test("POST request to verify login detais", async ({ request }) => {
     const password = process.env.PASSWORD;
     const email = process.env.EMAIL;
@@ -118,28 +141,7 @@ describe('User account management', async () => {
     expect(data).toHaveProperty("message");
     expect(data.message).toBe("User exists!");
   });
-  // DELETE To Delete User Account
-  test("DELETE request to delete account", async ({ request }) => {
-    const password = process.env.PASSWORD;
-    const email = process.env.EMAIL;
-
-    const response = await request.delete(
-      "https://automationexercise.com/api/deleteAccount",
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        form: { email, password },
-      },
-    );
-
-    expect(response.status()).toBe(200);
-
-    const data = await response.json();
-    expect(data).toHaveProperty("responseCode");
-    expect(data.responseCode).toBe(200);
-    expect(data).toHaveProperty("message");
-    expect(data.message).toBe("Account deleted!");
-  });
-})
+});
 
 // Print products with price greater than 1000
 test("GET request to print products with price greater than 1000", async ({
